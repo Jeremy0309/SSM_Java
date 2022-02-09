@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--   设置视图层包扫描器-->
+    <context:component-scan base-package="com.jeremy.controller"/>
+    <!--   注解驱动-->
+    <mvc:annotation-driven/>
+    <!--   静态资源过滤-->
+    <mvc:default-servlet-handler/>
+    <!--   视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- WEB-INF 目录下文件不可直接访问 -->
+        <property name="prefix" value="/admin/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--   设置文件上传核心组件-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <!--<mvc:mapping path="/admin/**"/>-->
+            <mvc:exclude-mapping path="/admin/login"/>
+            <mvc:exclude-mapping path="/admin/regist"/>
+            <mvc:exclude-mapping path="/admin/checkName"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/js/**"/>
+            <mvc:exclude-mapping path="/fonts/**"/>
+            <mvc:exclude-mapping path="/image/**"/>
+            <mvc:exclude-mapping path="/images/**"/>
+            <mvc:exclude-mapping path="/image_big/**"/>
+            <mvc:exclude-mapping path="/image_comm/**"/>
+            <mvc:exclude-mapping path="/imagecanshu/**"/>
+            <mvc:exclude-mapping path="/imagedetail/**"/>
+
+            <bean class="com.jeremy.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+
+</beans>
